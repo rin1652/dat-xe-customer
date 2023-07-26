@@ -13,8 +13,13 @@ class AppPages {
         page: () => const HomeScreen(),
         transition: Transition.zoom),
     GetPage(
-        name: Routes.booking,
-        page: () => const BookingScreen(),
+      name: Routes.booking,
+      page: () => const BookingScreen(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+        name: Routes.googlemap,
+        page: () => const GoogleMapScreen(),
         transition: Transition.cupertino)
   ];
 }
