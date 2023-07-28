@@ -3,21 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookingScreen extends StatelessWidget {
-  const BookingScreen({super.key});
-
+  BookingScreen({super.key});
+  final BookingViewModel bookingViewModel = Get.put(BookingViewModel());
   @override
   Widget build(BuildContext context) {
-    BookingViewModel vm = Get.put(BookingViewModel());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booking Screen'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('Map'),
-          onPressed: () {
-            vm.goGooglemap();
-          },
+      body: GetX<BookingViewModel>(
+        builder: (bookingViewModel) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                  'Local choose: ${bookingViewModel.place.value!.lat} and ${bookingViewModel.place.value!.lng}'),
+              ElevatedButton(
+                child: const Text('Choice place'),
+                onPressed: () {
+                  bookingViewModel.goGooglemap();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

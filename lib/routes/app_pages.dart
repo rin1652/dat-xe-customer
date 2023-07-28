@@ -14,7 +14,7 @@ class AppPages {
         transition: Transition.zoom),
     GetPage(
       name: Routes.booking,
-      page: () => const BookingScreen(),
+      page: () => BookingScreen(),
       transition: Transition.cupertino,
     ),
     GetPage(

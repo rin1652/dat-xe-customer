@@ -1,12 +1,14 @@
+import 'package:datxe/models/models.dart';
 import 'package:get/get.dart';
 import 'package:datxe/services/services.dart';
-import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GoogleMapViewModel extends GetxController {
-  final lat = RxDouble(0);
-  final lng = RxDouble(0);
+  final myPlace = Rxn<Place>(Place(0, 0));
+  final pickedLocation = Rxn<LatLng>();
 
-  final PermissionRepository _permissionRepository = PermissionRepository();
+  final PlaceRepository placeRepository = PlaceRepository();
+  final haveLocation = false.obs;
 
   @override
   void onInit() {
@@ -15,16 +17,23 @@ class GoogleMapViewModel extends GetxController {
   }
 
   void getUserLocation() async {
-    Location location = Location();
-    if (await _permissionRepository.requestLocation(location)) {
-      throw Exception('Permission denied');
-    }
-    LocationData locationData = await location.getLocation();
-    if (locationData.latitude == null || locationData.longitude == null) {
-      throw Exception('Location not found');
-    }
+    myPlace.value = await placeRepository.getMyPlace();
+    pickedLocation.value = LatLng(myPlace.value!.lat, myPlace.value!.lng);
+    setHaveLocation(true);
+  }
 
-    lat.value = locationData.latitude!;
-    lng.value = locationData.longitude!;
+  void setHaveLocation(bool value) {
+    if (haveLocation.value == value) return;
+    haveLocation.value = value;
+  }
+
+  void pickPlace() {
+    if (pickedLocation.value == null) {
+      throw Exception('pickedLocation is null');
+    }
+    Place pickerPlace =
+        Place(pickedLocation.value!.latitude, pickedLocation.value!.longitude);
+
+    Get.back(result: pickerPlace);
   }
 }
