@@ -37,11 +37,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         child: ElevatedButton(
-          onPressed: () {
-            if (viewModel.haveLocation.value) {
-              viewModel.pickPlace();
-            }
-          },
+          onPressed: viewModel.haveLocation.value
+              ? () {
+                  viewModel.pickPlace();
+                }
+              : null,
           child: const Text('Nhận khách tại đây'),
         ),
       ),

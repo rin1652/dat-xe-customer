@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:datxe/services/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../booking_module.dart';
+
 class GoogleMapViewModel extends GetxController {
   final myPlace = Rxn<Place>(Place(0, 0));
   final pickedLocation = Rxn<LatLng>();
@@ -17,6 +19,13 @@ class GoogleMapViewModel extends GetxController {
   }
 
   void getUserLocation() async {
+    BookingViewModel bookingViewModel = Get.find();
+    if (bookingViewModel.place.value != null) {
+      myPlace.value = bookingViewModel.place.value;
+      pickedLocation.value = LatLng(myPlace.value!.lat, myPlace.value!.lng);
+      setHaveLocation(true);
+      return;
+    }
     myPlace.value = await placeRepository.getMyPlace();
     pickedLocation.value = LatLng(myPlace.value!.lat, myPlace.value!.lng);
     setHaveLocation(true);
