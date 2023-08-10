@@ -6,17 +6,27 @@ import 'package:http/http.dart';
 
 class PlaceGoogleMapRepository extends PlaceGoogleMapApi {
   PlaceGoogleMapRepository({required String domain})
-      : super(domain: ApiConstans.GOOGLE_API_URL);
+      : super(domain: ApiConstants.GOOGLE_API_URL);
 
   @override
   Future<Place> getPlaceByAddress(String address) async {
     address = address.replaceAll(" ", "+");
-    final Response bodyResponse = await getService(
-        "${ApiConstans.FIND_PLACE_BY_NAME}$address${ApiConstans.KEY_GOOGLE_API}");
-    final Map<String, dynamic> courseList = json.decode(bodyResponse.body);
-    double lat = courseList["results"][0]["geometry"]["location"]["lat"];
-    double lng = courseList["results"][0]["geometry"]["location"]["lng"];
-    Place place = Place(lat, lng);
+    final Response response = await getService(
+        "${ApiConstants.FIND_PLACE_BY_NAME}$address${ApiConstants.KEY_GOOGLE_API}");
+    final Map<String, dynamic> body = json.decode(response.body);
+    double lat = body["results"][0]["geometry"]["location"]["lat"];
+    double lng = body["results"][0]["geometry"]["location"]["lng"];
+    Place place = Place(lat: lat, lng: lng);
     return place;
+  }
+
+  @override
+  Future<String> getAddressFromLatLng(double lat, double lng) async {
+    String address = "";
+    final Response response = await getService(
+        "${ApiConstants.FIND_PLACE_BY_LOCATION}$lat,$lng${ApiConstants.KEY_GOOGLE_API}");
+    final Map<String, dynamic> body = json.decode(response.body);
+    address = body["results"][0]["formatted_address"];
+    return address;
   }
 }

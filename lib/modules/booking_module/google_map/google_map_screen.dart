@@ -62,7 +62,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             myLocationButtonEnabled: true,
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                  viewModel.myPlace.value!.lat, viewModel.myPlace.value!.lng),
+                  viewModel.myPlace.value!.lat!, viewModel.myPlace.value!.lng!),
               zoom: 16,
             ),
             markers: {
@@ -70,8 +70,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 markerId: const MarkerId('m1'),
                 position: viewModel.pickedLocation.value ??
                     LatLng(
-                      viewModel.myPlace.value!.lat,
-                      viewModel.myPlace.value!.lng,
+                      viewModel.myPlace.value!.lat!,
+                      viewModel.myPlace.value!.lng!,
                     ),
               )
             },

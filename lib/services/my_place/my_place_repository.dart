@@ -15,6 +15,6 @@ class PlaceRepository {
       throw Exception('Location not found');
     }
 
-    return Place(locationData.latitude!, locationData.longitude!);
+    return Place(lat: locationData.latitude!, lng: locationData.longitude!);
   }
 }
